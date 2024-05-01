@@ -26,8 +26,6 @@ from spyne.client import RemoteService
 from spyne.client import RemoteProcedureBase
 from spyne.client import ClientBase
 
-from zope.interface import implements
-
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from twisted.internet.protocol import Protocol
@@ -42,6 +40,7 @@ from twisted.web.http_headers import Headers
 
 class _Producer(object):
     if six.PY2:
+        from zope.interface import implements
         implements(IBodyProducer)
 
     _deferred = None
