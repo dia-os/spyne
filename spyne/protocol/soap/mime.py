@@ -115,7 +115,7 @@ def collapse_swa(ctx, content_type, ns_soap_env):
             http://www.w3.org/Submission/soap11mtom10/
 
     :param  content_type: value of the Content-Type header field, parsed by
-                          cgi.parse_header() function
+                          spyne.util.http.parse_content_type_header() function
     :param  ctx:          request context
     """
 

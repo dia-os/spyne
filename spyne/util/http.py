@@ -23,6 +23,7 @@
 import sys
 import time
 
+from email.message import EmailMessage
 from time import strftime
 from time import gmtime
 from collections import deque
@@ -72,3 +73,8 @@ def generate_cookie(k, v, max_age=None, domain=None, path=None,
         retval.append("Secure")
 
     return '; '.join(retval)
+
+def parse_content_type_header(h):
+    msg = EmailMessage()
+    msg['content-type'] = h
+    return msg.get_content_type(), msg['content-type'].params

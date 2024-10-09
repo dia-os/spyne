@@ -27,7 +27,6 @@ logic.
 import logging
 logger = logging.getLogger(__name__)
 
-import cgi
 import threading
 
 from inspect import isgenerator
@@ -44,6 +43,7 @@ from spyne.protocol.http import HttpRpc
 from spyne.server.http import HttpBase, HttpMethodContext, HttpTransportContext
 from spyne.util.odict import odict
 from spyne.util.address import address_parser
+from spyne.util.http import parse_content_type_header
 
 from spyne.const.ansi_color import LIGHT_GREEN
 from spyne.const.ansi_color import END_COLOR
@@ -527,9 +527,9 @@ class WsgiApplication(HttpBase):
         charset = None
         if content_type is not None:
             # fyi, here's what the parse_header function returns:
-            # >>> import cgi; cgi.parse_header("text/xml; charset=utf-8")
+            # >>> parse_content_type_header("text/xml; charset=utf-8")
             # ('text/xml', {'charset': 'utf-8'})
-            content_type = cgi.parse_header(content_type)
+            content_type = parse_content_type_header(content_type)
             charset = content_type[1].get('charset', None)
 
         return self.__wsgi_input_to_iterable(http_env), charset

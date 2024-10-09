@@ -38,8 +38,6 @@ import logging
 logger = logging.getLogger(__name__)
 logger_invalid = logging.getLogger(__name__ + ".invalid")
 
-import cgi
-
 from itertools import chain
 
 import spyne.const.xml as ns
@@ -50,6 +48,7 @@ from lxml.etree import XMLParser
 
 from spyne import BODY_STYLE_WRAPPED
 from spyne.util import six
+from spyne.util.http import parse_content_type_header
 from spyne.const.xml import DEFAULT_NS
 from spyne.const.http import HTTP_405, HTTP_500
 from spyne.error import RequestNotAllowed
@@ -197,7 +196,7 @@ class Soap11(XmlDocument):
                         "You must issue a POST request with the Content-Type "
                         "header properly set.")
 
-            content_type = cgi.parse_header(content_type)
+            content_type = parse_content_type_header(content_type)
             ctx.in_string = collapse_swa(ctx, content_type, self.ns_soap_env)
 
         ctx.in_document = _parse_xml_string(ctx.in_string,
