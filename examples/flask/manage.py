@@ -31,7 +31,7 @@
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from spyne.server.wsgi import WsgiApplication
-
+from spyne.protocol.soap import Soap11, Soap12
 from apps import spyned
 from apps.flasked import app
 
@@ -39,7 +39,9 @@ from apps.flasked import app
 # SOAP services are distinct wsgi applications, we should use dispatcher
 # middleware to bring all aps together
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
-    '/soap': WsgiApplication(spyned.create_app(app))
+    '/http_rpc': WsgiApplication(spyned.create_app(app)),
+    '/soap_11': WsgiApplication(spyned.create_app(app, in_protocol=Soap11(), out_protocol=Soap11())),
+    '/soap_12': WsgiApplication(spyned.create_app(app, in_protocol=Soap12(), out_protocol=Soap12())),
 })
 
 

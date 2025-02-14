@@ -27,7 +27,8 @@ More info can be found at: https://www.w3.org/TR/soap12-part1/
 import logging
 
 from lxml.builder import E
-
+import spyne.const.xml as ns
+from spyne.protocol.xml import XmlDocument
 from spyne.protocol.soap.soap11 import Soap11
 from spyne.protocol.xml import _append
 from spyne.util.six import string_types
@@ -46,12 +47,13 @@ class Soap12(Soap11):
     """
     mime_type = 'application/soap+xml; charset=utf-8'
 
-    soap_env = PREFMAP[NS_SOAP12_ENV]
-    ns_soap_env = NS_SOAP12_ENV
-
-    type = set(Soap11.type)
-    type.discard('soap11')
+    type = set(XmlDocument.type)
     type.update(('soap', 'soap12'))
+
+
+    soap_env = PREFMAP[NS_SOAP12_ENV]
+    ns_soap_env = ns.NS_SOAP12_ENV
+    ns_soap_enc = ns.NS_SOAP12_ENC
 
     def generate_subcode(self, value, subcode=None):
         subcode_node = E("{%s}Subcode" % self.ns_soap_env)

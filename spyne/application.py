@@ -158,7 +158,6 @@ class Application(object):
         Overriding this method would break event management. So this is not
         meant to be overridden unless you know what you're doing.
         """
-
         try:
             ctx.fire_event('method_call')
 

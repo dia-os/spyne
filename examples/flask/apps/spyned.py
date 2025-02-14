@@ -36,7 +36,6 @@ from spyne.protocol.json import JsonDocument
 class HelloWorldService(Service):
     @rpc(Unicode, Integer, _returns=Iterable(Unicode))
     def hello(ctx, name, times):
-        name = name or ctx.udc.config['HELLO']
         for i in range(times):
             yield u'Hello, %s' % name
 
@@ -46,15 +45,15 @@ class UserDefinedContext(object):
         self.config = flask_config
 
 
-def create_app(flask_app):
+def create_app(flask_app, in_protocol=HttpRpc(validator='soft'), out_protocol=JsonDocument(ignore_wrappers=True)):
     """Creates SOAP services application and distribute Flask config into
     user con defined context for each method call.
     """
     application = Application(
         [HelloWorldService], 'spyne.examples.flask',
         # The input protocol is set as HttpRpc to make our service easy to call.
-        in_protocol=HttpRpc(validator='soft'),
-        out_protocol=JsonDocument(ignore_wrappers=True),
+        in_protocol=in_protocol,
+        out_protocol=out_protocol,
     )
 
     # Use `method_call` hook to pass flask config to each service method
